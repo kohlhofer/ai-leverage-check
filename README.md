@@ -11,6 +11,6 @@ The assessment places you on two axes:
 
 Those two place you in one of four quadrants: Dabbler, Sharp operator, Output factory, or Force multiplier.
 
-**[Take the assessment →](https://kohlhofer.github.io/ai-maturity-self-eval/)**
+**[Take the assessment →](https://kohlhofer.com/ai-maturity-self-eval/)**
 
 It's a single self-contained HTML file with no dependencies. Your answers are encoded in the share link; nothing is sent anywhere.
