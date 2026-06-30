@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>How are you actually using AI? — A self-assessment</title>
+<title>The AI Leverage Check — how much are you actually getting from AI?</title>
 <style>
   :root {
     --ink: #0a0a0a;
@@ -78,6 +78,7 @@
   .ro-v { font-size: 23px; font-weight: 800; margin: 5px 0 2px; letter-spacing: -.01em; }
   .ro-v small { font-size: 13px; color: var(--g2); font-weight: 600; }
   .ro-state { font-size: 12px; color: var(--g1); font-weight: 600; }
+  .readout-note { font-size: 12px; color: var(--g2); margin: 10px 0 0; }
 
   /* 2x2 — stark, mono */
   .matrix-wrap { margin: 30px 0 0; }
@@ -135,9 +136,9 @@
 <body>
 <div class="wrap">
 
-  <p class="kicker">AI usage · self-assessment</p>
+  <p class="kicker">The AI Leverage Check · a 2-minute self-check</p>
   <h1>Everyone thinks they're using AI fully.</h1>
-  <p class="lede">They're not. Everyone uses it <b>differently</b>, and most people rate themselves higher than they are, because <b>frequency feels like maturity.</b> It isn't.</p>
+  <p class="lede">They're not. Everyone uses it <b>differently</b>, and most people rate themselves higher than they are, because <b>frequency feels like leverage.</b> It isn't.</p>
   <p class="sub">Two things make the difference: how many of the things AI can do for you that you actually <b>practise</b>, and whether your AI work has actually <b>landed</b> — shipped, used by others, a number that moved. This rates both on what you've genuinely done. Answer for the last two weeks, honestly.</p>
 
   <hr class="major" />
@@ -146,7 +147,7 @@
   <div class="step">
     <span class="step-no">Step 1 · Capability</span>
     <h2>How deep does each one go for you?</h2>
-    <p class="hint">Rate what's <b>true of your last two weeks</b> — "could do" doesn't count.</p>
+    <p class="hint">Rate what's <b>true of your last two weeks</b> — not what you could do. Pick the top level only if you can name a specific, recent example.</p>
 
     <div class="tier"><span class="t-name">Foundation</span><span class="t-note">everyone does these — the floor, not the goal</span></div>
     <div id="caps-foundation"></div>
@@ -161,7 +162,7 @@
   <div class="step">
     <span class="step-no">Step 2 · Impact</span>
     <h2>What came of your AI work?</h2>
-    <p class="hint">Capability means nothing if nothing lands. Rate these on <b>what actually happened</b> — evidence, not intent.</p>
+    <p class="hint">Capability means nothing if nothing lands. Rate these on <b>what actually happened</b>, and only where the AI genuinely drove it rather than just happening alongside. Evidence, not intent.</p>
     <div id="caps-impact"></div>
   </div>
 
@@ -170,34 +171,38 @@
   <!-- RESULTS -->
   <div id="results">
     <div class="r-top">
-      <div class="r-kick">Your result</div>
+      <div class="r-kick">Your read</div>
       <div class="r-name" id="r-name">—</div>
       <div class="r-short" id="r-short">—</div>
-      <div class="readout" id="r-readout"></div>
     </div>
-
-    <div class="matrix-wrap">
-      <div class="mgrid">
-        <div class="axislabel axis-y">More capability →</div>
-        <div class="matrix">
-          <div class="quad q-tl"><div class="qn">Output factory</div><div class="qd">High capability, little lands.</div></div>
-          <div class="quad q-tr"><div class="qn">Force multiplier</div><div class="qd">High capability, real impact.</div></div>
-          <div class="quad q-bl"><div class="qn">Dabbler</div><div class="qd">Occasional; little lands.</div></div>
-          <div class="quad q-br"><div class="qn">Sharp operator</div><div class="qd">Lean tools, but it lands.</div></div>
-          <div class="mline h"></div>
-          <div class="mline v"></div>
-          <div class="you" id="you"></div>
-        </div>
-        <div></div>
-        <div class="axislabel axis-x">Output (little lands) → Outcome (real impact)</div>
-      </div>
-    </div>
-
-    <div class="section"><h3>What this means</h3><p id="r-meaning">—</p></div>
 
     <div class="section"><h3>Your profile</h3><div id="r-profile"></div></div>
 
     <div class="section"><h3>Your next move</h3><p id="r-next">—</p><p id="r-nudge"></p></div>
+
+    <div class="section"><h3>What this means</h3><p id="r-meaning">—</p></div>
+
+    <div class="section">
+      <h3>Where this sits</h3>
+      <div class="readout" id="r-readout"></div>
+      <p class="readout-note">A rough read of two rough axes — a prompt to think with, not a precise score.</p>
+      <div class="matrix-wrap">
+        <div class="mgrid">
+          <div class="axislabel axis-y">More capability →</div>
+          <div class="matrix">
+            <div class="quad q-tl"><div class="qn">Output factory</div><div class="qd">High capability, little lands.</div></div>
+            <div class="quad q-tr"><div class="qn">Force multiplier</div><div class="qd">High capability, real impact.</div></div>
+            <div class="quad q-bl"><div class="qn">Dabbler</div><div class="qd">Occasional; little lands.</div></div>
+            <div class="quad q-br"><div class="qn">Sharp operator</div><div class="qd">Lean tools, but it lands.</div></div>
+            <div class="mline h"></div>
+            <div class="mline v"></div>
+            <div class="you" id="you"></div>
+          </div>
+          <div></div>
+          <div class="axislabel axis-x">Output (little lands) → Outcome (real impact)</div>
+        </div>
+      </div>
+    </div>
 
     <div class="section trap" id="r-trap" style="display:none;"><h3>The trap you're in</h3><p id="r-trap-text">—</p></div>
 
@@ -207,7 +212,7 @@
     </div>
   </div>
 
-  <p class="fineprint">A self-assessment, not a scoreboard. Maturity is capability multiplied by whether it actually lands — not the one impressive thing you tried once. Your answers stay in the share link; nothing is sent anywhere.</p>
+  <p class="fineprint">This is an opinionated self-check built from a point of view, not a validated measurement calibrated against data. Treat it as a mirror to think with and a prompt for your next move, not a score to defend. The bands and cut-offs are deliberate judgement calls, not science. Your answers stay in the share link; nothing is sent anywhere.</p>
 
 </div>
 
@@ -326,8 +331,8 @@ function render() {
     '<div class="ro"><span class="ro-l">Capability</span><div class="ro-v">' + leverageScore + '<small> / 10</small></div><span class="ro-state">' + band(leverageScore) + '</span></div>' +
     '<div class="ro"><span class="ro-l">Impact</span><div class="ro-v">' + impactScore + '<small> / 8</small></div><span class="ro-state">' + impactWord(impactScore) + '</span></div>';
 
-  document.getElementById('you').style.left = Math.max(6, Math.min(94, (impactScore / 12) * 100)) + '%';
-  document.getElementById('you').style.bottom = Math.max(6, Math.min(94, (leverageScore / 15) * 100)) + '%';
+  document.getElementById('you').style.left = Math.max(6, Math.min(94, (impactScore / 8) * 100)) + '%';
+  document.getElementById('you').style.bottom = Math.max(6, Math.min(94, (leverageScore / 10) * 100)) + '%';
   document.querySelectorAll('.quad').forEach(el => el.classList.remove('active'));
   document.querySelector('.' + QUAD_CELL[q]).classList.add('active');
 
