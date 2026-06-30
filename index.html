@@ -246,8 +246,9 @@ const IMPACT = [
     stem: "I've doubled down on, changed, or killed AI work because of what the results showed." },
 ];
 const ALL = FOUNDATION.concat(LEVERAGE);
-const DEPTH = ["Never", "Tried it", "Regularly", "Always"];
-const FREQ = ["Never", "Once", "A few times", "Often"];
+const DEPTH = ["Never", "Tried it", "Regularly"];
+const FREQ = ["Never", "Once", "Often"];
+const CAP_MAX = 2; // points per item (top of each scale)
 
 function seg(key, labels) {
   return '<div class="seg" role="radiogroup" aria-label="' + key + '">' +
@@ -281,10 +282,10 @@ function compute() {
     impactScore: imp.reduce((a, b) => a + b, 0),
   };
 }
-function band(s) { return s <= 2 ? "Foundation" : s <= 5 ? "Emerging" : s <= 9 ? "Integrated" : "Fluent"; }
-function impactWord(s) { return s <= 2 ? "not landing yet" : s <= 4 ? "starting to land" : s <= 8 ? "landing" : "compounding"; }
+function band(s) { return s <= 1 ? "Foundation" : s <= 4 ? "Emerging" : s <= 7 ? "Integrated" : "Fluent"; } // 0-10
+function impactWord(s) { return s <= 1 ? "not landing yet" : s <= 3 ? "starting to land" : s <= 6 ? "landing" : "compounding"; } // 0-8
 function quadrant(lv, im) {
-  const high = lv >= 6, outcome = im >= 5;
+  const high = lv >= 5, outcome = im >= 4;
   if (high && outcome) return 'target';
   if (high && !outcome) return 'trap';
   if (!high && outcome) return 'sharp';
@@ -304,13 +305,13 @@ const QUAD_CELL = { trap: 'q-tl', target: 'q-tr', dabbler: 'q-bl', sharp: 'q-br'
 
 function nextMove(lev, leverageScore) {
   if (leverageScore === 0) return "You haven't moved past the foundation yet — and that's the honest starting line. " + LEVERAGE[0].deepen;
-  let gapIdx = -1, gapVal = 4;
-  lev.forEach((v, i) => { if (v < 3 && v < gapVal) { gapVal = v; gapIdx = i; } });
+  let gapIdx = -1, gapVal = 3;
+  lev.forEach((v, i) => { if (v < CAP_MAX && v < gapVal) { gapVal = v; gapIdx = i; } });
   if (gapIdx === -1) return "You're deep across every capability — there's no thin spot left to fill. The frontier now is the other axis: keep what you've built pointed at outcomes you can actually show landed.";
   const c = LEVERAGE[gapIdx];
   const lead = gapVal === 0
     ? "Your biggest untapped capability is <b>" + c.name + "</b> — you don't do this yet. "
-    : "Your thinnest compounding capability is <b>" + c.name + "</b> — you've only " + (gapVal === 1 ? "dabbled" : "done it sometimes") + ". ";
+    : "Your thinnest compounding capability is <b>" + c.name + "</b> — you've only tried it. ";
   return lead + c.deepen;
 }
 
@@ -322,8 +323,8 @@ function render() {
   document.getElementById('r-name').textContent = qd.name;
   document.getElementById('r-short').textContent = qd.short;
   document.getElementById('r-readout').innerHTML =
-    '<div class="ro"><span class="ro-l">Capability</span><div class="ro-v">' + leverageScore + '<small> / 15</small></div><span class="ro-state">' + band(leverageScore) + '</span></div>' +
-    '<div class="ro"><span class="ro-l">Impact</span><div class="ro-v">' + impactScore + '<small> / 12</small></div><span class="ro-state">' + impactWord(impactScore) + '</span></div>';
+    '<div class="ro"><span class="ro-l">Capability</span><div class="ro-v">' + leverageScore + '<small> / 10</small></div><span class="ro-state">' + band(leverageScore) + '</span></div>' +
+    '<div class="ro"><span class="ro-l">Impact</span><div class="ro-v">' + impactScore + '<small> / 8</small></div><span class="ro-state">' + impactWord(impactScore) + '</span></div>';
 
   document.getElementById('you').style.left = Math.max(6, Math.min(94, (impactScore / 12) * 100)) + '%';
   document.getElementById('you').style.bottom = Math.max(6, Math.min(94, (leverageScore / 15) * 100)) + '%';
@@ -332,7 +333,7 @@ function render() {
 
   const prow = (name, v, cls, labels) =>
     '<div class="prow' + (cls ? ' ' + cls : '') + '"><span class="pn">' + name + '</span>' +
-    '<span class="pbar"><span class="pfill" style="width:' + (v / 3 * 100) + '%"></span></span>' +
+    '<span class="pbar"><span class="pfill" style="width:' + (v / CAP_MAX * 100) + '%"></span></span>' +
     '<span class="pval">' + labels[v] + '</span></div>';
   document.getElementById('r-profile').innerHTML =
     '<div class="pgroup">Foundation</div>' + FOUNDATION.map((c, i) => prow(c.name, found[i], 'found', DEPTH)).join('') +
@@ -343,8 +344,8 @@ function render() {
   document.getElementById('r-next').innerHTML = nextMove(lev, leverageScore);
 
   const notes = [];
-  if (leverageScore < 3 && foundationScore >= 4) notes.push("You're fluent at the foundation — chat and one-off artifacts — but haven't built leverage on top of it. That's the gap, and it's the biggest one.");
-  if (impactScore < 5) notes.push("And on the impact axis: little of your AI work has visibly landed yet — not much has shipped, been picked up by others, or moved a number you checked. Capability without that is just output. Take your most-used AI work and find the one result it actually changed.");
+  if (leverageScore < 3 && foundationScore >= 3) notes.push("You're fluent at the foundation — chat and one-off artifacts — but haven't built leverage on top of it. That's the gap, and it's the biggest one.");
+  if (impactScore < 4) notes.push("And on the impact axis: little of your AI work has visibly landed yet — not much has shipped, been picked up by others, or moved a number you checked. Capability without that is just output. Take your most-used AI work and find the one result it actually changed.");
   const nudge = document.getElementById('r-nudge');
   nudge.textContent = notes.join(' ');
   nudge.style.display = notes.length ? '' : 'none';
@@ -364,7 +365,7 @@ function encodeState() {
 function syncURL() { try { history.replaceState(null, '', location.pathname + location.search + '#' + encodeState()); } catch (e) {} }
 function setRadio(key, v) { const el = document.querySelector('input[name="' + key + '"][value="' + v + '"]'); if (el) el.checked = true; }
 function applyStateFromURL() {
-  const m = (location.hash || '').match(/s=([0-3]{0,7})\.([0-3]{0,4})/);
+  const m = (location.hash || '').match(/s=([0-2]{0,7})\.([0-2]{0,4})/);
   if (!m) return false;
   ALL.forEach((c, i) => setRadio(c.key, m[1][i] !== undefined ? +m[1][i] : 0));
   IMPACT.forEach((c, i) => setRadio(c.key, m[2][i] !== undefined ? +m[2][i] : 0));
