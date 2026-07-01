@@ -92,7 +92,7 @@
   .readout-note { font-size: 12px; color: var(--g2); margin: 10px 0 0; }
 
   /* 2x2 — stark, mono */
-  .matrix-wrap { margin: 30px 0 0; }
+  .matrix-wrap { margin: 26px 0 24px; }
   .mgrid { display: grid; grid-template-columns: 14px 1fr; grid-template-rows: 1fr 14px; gap: 8px; max-width: 420px; margin: 0 auto; }
   .axislabel { font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--g2); text-align: center; font-weight: 700; }
   .axis-y { writing-mode: vertical-rl; transform: rotate(180deg); }
@@ -209,33 +209,30 @@
       <div class="r-short" id="r-short">—</div>
     </div>
 
+    <div class="matrix-wrap">
+      <div class="mgrid">
+        <div class="axislabel axis-y">More capability →</div>
+        <div class="matrix">
+          <div class="quad q-tl"><div class="qn">Output factory</div><div class="qd">High capability, little lands.</div></div>
+          <div class="quad q-tr"><div class="qn">Force multiplier</div><div class="qd">High capability, real impact.</div></div>
+          <div class="quad q-bl"><div class="qn">Dabbler</div><div class="qd">Occasional; little lands.</div></div>
+          <div class="quad q-br"><div class="qn">Sharp operator</div><div class="qd">Lean tools, but it lands.</div></div>
+          <div class="mline h"></div>
+          <div class="mline v"></div>
+          <div class="you" id="you"></div>
+        </div>
+        <div></div>
+        <div class="axislabel axis-x">Output (little lands) → Outcome (real impact)</div>
+      </div>
+    </div>
+    <div class="readout" id="r-readout"></div>
+    <p class="readout-note">A rough read of two rough axes — a prompt to think with, not a precise score.</p>
+
     <div class="section"><h3>Your profile</h3><div id="r-profile"></div></div>
 
     <div class="section"><h3>Your next move</h3><p id="r-next">—</p><p id="r-nudge"></p></div>
 
     <div class="section"><h3>What this means</h3><p id="r-meaning">—</p></div>
-
-    <div class="section">
-      <h3>Where this sits</h3>
-      <div class="readout" id="r-readout"></div>
-      <p class="readout-note">A rough read of two rough axes — a prompt to think with, not a precise score.</p>
-      <div class="matrix-wrap">
-        <div class="mgrid">
-          <div class="axislabel axis-y">More capability →</div>
-          <div class="matrix">
-            <div class="quad q-tl"><div class="qn">Output factory</div><div class="qd">High capability, little lands.</div></div>
-            <div class="quad q-tr"><div class="qn">Force multiplier</div><div class="qd">High capability, real impact.</div></div>
-            <div class="quad q-bl"><div class="qn">Dabbler</div><div class="qd">Occasional; little lands.</div></div>
-            <div class="quad q-br"><div class="qn">Sharp operator</div><div class="qd">Lean tools, but it lands.</div></div>
-            <div class="mline h"></div>
-            <div class="mline v"></div>
-            <div class="you" id="you"></div>
-          </div>
-          <div></div>
-          <div class="axislabel axis-x">Output (little lands) → Outcome (real impact)</div>
-        </div>
-      </div>
-    </div>
 
     <div class="section trap" id="r-trap" style="display:none;"><h3>The trap you're in</h3><p id="r-trap-text">—</p></div>
 
