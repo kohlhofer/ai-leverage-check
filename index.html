@@ -168,7 +168,7 @@
       <h2>How deep does each one go for you?</h2>
       <p class="hint">Rate what's <b>true of your last two weeks</b> — not what you could do. Pick the top level only if you can name a specific, recent example.</p>
 
-      <div class="tier"><span class="t-name">Foundation</span><span class="t-note">everyone does these — the floor, not the goal</span></div>
+      <div class="tier"><span class="t-name">Foundation</span><span class="t-note">everyone starts here — moving past these is the point</span></div>
       <div id="caps-foundation"></div>
 
       <div class="tier"><span class="t-name">Leverage capabilities</span><span class="t-note">additive — collect and deepen in any order</span></div>
@@ -299,6 +299,7 @@ const IMPACT = [
 const ALL = FOUNDATION.concat(LEVERAGE);
 const DEPTH = ["Never", "Tried it", "Regularly"];
 const FREQ = ["Never", "Once", "Often"];
+const FOUND = ["My main mode", "Sometimes", "Moved past"]; // foundation: progression, right = graduated
 const CAP_MAX = 2; // points per item (top of each scale)
 
 function seg(key, labels) {
@@ -312,7 +313,7 @@ function itemCard(c, num, stmt, labels) {
     '<p class="item-stmt">' + stmt + '</p>' +
     '<p class="item-eg">' + c.eg + '</p>' + seg(c.key, labels) + '</div></div>';
 }
-document.getElementById('caps-foundation').innerHTML = FOUNDATION.map((c, i) => itemCard(c, i + 1, c.tell, DEPTH)).join('');
+document.getElementById('caps-foundation').innerHTML = FOUNDATION.map((c, i) => itemCard(c, i + 1, c.tell, FOUND)).join('');
 document.getElementById('caps-leverage').innerHTML = LEVERAGE.map((c, i) => itemCard(c, i + 1 + FOUNDATION.length, c.tell, DEPTH)).join('');
 document.getElementById('caps-impact').innerHTML = IMPACT.map((c, i) => itemCard(c, i + 1 + ALL.length, c.stem, FREQ)).join('');
 
@@ -382,7 +383,7 @@ function render() {
     '<span class="pbar"><span class="pfill" style="width:' + (v / CAP_MAX * 100) + '%"></span></span>' +
     '<span class="pval">' + labels[v] + '</span></div>';
   document.getElementById('r-profile').innerHTML =
-    '<div class="pgroup">Foundation</div>' + FOUNDATION.map((c, i) => prow(c.name, found[i], 'found', DEPTH)).join('') +
+    '<div class="pgroup">Foundation</div>' + FOUNDATION.map((c, i) => prow(c.name, found[i], 'found', FOUND)).join('') +
     '<div class="pgroup">Leverage capabilities</div>' + LEVERAGE.map((c, i) => prow(c.name, lev[i], '', DEPTH)).join('') +
     '<div class="pgroup">Impact evidence</div>' + IMPACT.map((c, i) => prow(c.name, imp[i], '', FREQ)).join('');
 
@@ -390,7 +391,7 @@ function render() {
   document.getElementById('r-next').innerHTML = nextMove(lev, leverageScore);
 
   const notes = [];
-  if (leverageScore < 3 && foundationScore >= 3) notes.push("You're fluent at the foundation — chat and one-off artifacts — but haven't built leverage on top of it. That's the gap, and it's the biggest one.");
+  if (leverageScore < 3 && foundationScore <= 1) notes.push("You're still mostly in the basics — chat and one-off artifacts — and haven't built leverage on top. That's the gap, and it's the biggest one.");
   if (impactScore < 4) notes.push("And on the impact axis: little of your AI work has visibly landed yet — not much has shipped, been picked up by others, or moved a number you checked. Capability without that is just output. Take your most-used AI work and find the one result it actually changed.");
   const nudge = document.getElementById('r-nudge');
   nudge.textContent = notes.join(' ');
