@@ -14,6 +14,7 @@
     --line: #e6e6e6;
     --line2: #cfcfcf;
     --soft: #f4f4f4;
+    --accent: #e5401f;
     --maxw: 680px;
   }
   * { box-sizing: border-box; }
@@ -54,7 +55,9 @@
   .tier .t-note { color: var(--g2); font-size: 13px; }
 
   /* question item — no card; hairline-separated */
-  .item { padding: 24px 0; border-top: 1px solid var(--line); }
+  .item { display: grid; grid-template-columns: 40px 1fr; gap: 18px; align-items: start; padding: 24px 0; border-top: 1px solid var(--line); }
+  .item-num { font-size: 20px; font-weight: 800; color: var(--accent); line-height: 1.05; letter-spacing: -.01em; font-variant-numeric: tabular-nums; }
+  .item-body { min-width: 0; }
   .item-label { text-transform: uppercase; letter-spacing: .09em; font-size: 11px; font-weight: 700; color: var(--g2); }
   .item-stmt { font-size: 17.5px; line-height: 1.4; font-weight: 500; margin: 7px 0 5px; max-width: 54ch; }
   .item-eg { font-size: 14px; line-height: 1.4; color: var(--g2); margin: 0 0 15px; max-width: 54ch; }
@@ -134,6 +137,7 @@
   @media (max-width: 520px) {
     body { font-size: 16px; }
     .wrap { padding: 40px 18px 90px; }
+    .item { grid-template-columns: 30px 1fr; gap: 13px; }
     .seg { display: flex; width: 100%; }
     .seg label { flex: 1; }
     .seg span { padding: 10px 4px; text-align: center; font-size: 12px; }
@@ -302,14 +306,15 @@ function seg(key, labels) {
     labels.map((d, v) => '<label><input type="radio" name="' + key + '" value="' + v + '"><span>' + d + '</span></label>').join('') +
     '</div>';
 }
-function itemCard(c, stmt, labels) {
-  return '<div class="item"><span class="item-label">' + c.name + (c.tag ? ' · ' + c.tag : '') + '</span>' +
+function itemCard(c, num, stmt, labels) {
+  return '<div class="item"><span class="item-num">' + String(num).padStart(2, '0') + '</span>' +
+    '<div class="item-body"><span class="item-label">' + c.name + (c.tag ? ' · ' + c.tag : '') + '</span>' +
     '<p class="item-stmt">' + stmt + '</p>' +
-    '<p class="item-eg">' + c.eg + '</p>' + seg(c.key, labels) + '</div>';
+    '<p class="item-eg">' + c.eg + '</p>' + seg(c.key, labels) + '</div></div>';
 }
-document.getElementById('caps-foundation').innerHTML = FOUNDATION.map(c => itemCard(c, c.tell, DEPTH)).join('');
-document.getElementById('caps-leverage').innerHTML = LEVERAGE.map(c => itemCard(c, c.tell, DEPTH)).join('');
-document.getElementById('caps-impact').innerHTML = IMPACT.map(c => itemCard(c, c.stem, FREQ)).join('');
+document.getElementById('caps-foundation').innerHTML = FOUNDATION.map((c, i) => itemCard(c, i + 1, c.tell, DEPTH)).join('');
+document.getElementById('caps-leverage').innerHTML = LEVERAGE.map((c, i) => itemCard(c, i + 1 + FOUNDATION.length, c.tell, DEPTH)).join('');
+document.getElementById('caps-impact').innerHTML = IMPACT.map((c, i) => itemCard(c, i + 1 + ALL.length, c.stem, FREQ)).join('');
 
 function depthOf(key) { const el = document.querySelector('input[name="' + key + '"]:checked'); return el ? +el.value : 0; }
 function compute() {
